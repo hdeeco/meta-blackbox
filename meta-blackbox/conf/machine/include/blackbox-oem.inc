@@ -3,9 +3,11 @@ include conf/machine/include/build-extras.inc
 
 BRAND_OEM = "blackbox"
 
+GST_VERSION = "1.0"
+
 MACHINE_NAME = "\
 ${@base_contains('MACHINEBUILD', 'sogno8800hd', '8800HD' , '', d)}\
-${@base_contains('MACHINEBUILD', 'uniboxhde', 'HDEco+' , '', d)}\
+${@base_contains('MACHINEBUILD', 'uniboxhde', 'HDECO+' , '', d)}\
 "
 
 MACHINE_BRAND = "\
@@ -18,13 +20,21 @@ ${@base_contains('MACHINEBUILD', 'sogno8800hd', 'sogno/8800hd' , '', d)}\
 ${@base_contains('MACHINEBUILD', 'uniboxhde', 'unibox/hde' , '', d)}\
 "
 
+MTD_KERNEL = "\
+${@base_contains('MACHINEBUILD', 'sogno8800hd', 'mtd7' , '', d)}\
+${@base_contains('MACHINEBUILD', 'uniboxhde', 'mtd7' , '', d)}\
+"
+
+MTD_ROOTFS = "\
+${@base_contains('MACHINEBUILD', 'sogno8800hd', 'mtd6' , '', d)}\
+${@base_contains('MACHINEBUILD', 'uniboxhde', 'mtd6' , '', d)}\
+"
+
 MKUBIFS_ARGS = "\
 ${@base_contains('MACHINEBUILD', 'sogno8800hd', '-m 2048 -e 126976 -c 4096 -F' , '', d)}\
 ${@base_contains('MACHINEBUILD', 'uniboxhde', '-m 2048 -e 126976 -c 8160 -F' , '', d)}\
 "
 
-MTD_ROOTFS = "mtd7"
-MTD_KERNEL = "mtd8"
 KERNEL_FILE = "kernel.bin"
 ROOTFS_FILE = "rootfs.bin"
 
@@ -35,12 +45,12 @@ MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS = "\
     "
 
 MACHINE_EXTRA_RRECOMMENDS = " \
-    gst-plugin-dvbmediasink \
+    gstreamer1.0-plugin-dvbmediasink \
     "
 
 include conf/machine/include/autoload-filesystems.inc
 
-DVBMEDIASINK_CONFIG = "--with-wma --with-wmv --with-pcm"
+DVBMEDIASINK_CONFIG = "--with-wma --with-wmv --with-pcm --with-dts --with-eac3"
 
 TARGET_ARCH = "mipsel"
 DEFAULTTUNE = "mips32el"
@@ -75,6 +85,9 @@ IMAGE_CMD_ubi_append = " \
     cd ${DEPLOY_DIR_IMAGE}; \
     zip ${IMAGE_NAME}_usb.zip ${IMAGEDIR}/*; \
     rm -f ${DEPLOY_DIR_IMAGE}/*.ubifs; \
+    rm -f ${DEPLOY_DIR_IMAGE}/*.manifest; \
+    rm -f ${DEPLOY_DIR_IMAGE}/.ubifs; \
+    rm -f ${DEPLOY_DIR_IMAGE}/.manifest; \
     rm -Rf ${IMAGEDIR}; \
     "
 

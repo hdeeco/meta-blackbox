@@ -7,14 +7,13 @@ PR = "r1"
 inherit machine_kernel_pr
 
 KV = "3.14.21"
-SRCDATE = "20150218"
+SRCDATE = "20150327"
 
-SRC_URI[md5sum] = "c901589c619ace211d5e5d6ee6119f44"
-SRC_URI[sha256sum] = "65c473604ae2c68a62f8adedc26513ad752a8963ecdeb7946f9f3139783e39fd"
-
+SRC_URI[md5sum] = "f6bd9548474e51bd0ef5c1f401879a5c"
+SRC_URI[sha256sum] = "a1d4469749d7e7df07d17f4f83f30dee39bcbe82439c1943587829993f9cd790"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/linux-${PV}/COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-MACHINE_KERNEL_PR_append = ".9"
+MACHINE_KERNEL_PR_append = ".21"
 
 # By default, kernel.bbclass modifies package names to allow multiple kernels
 # to be installed in parallel. We revert this change and rprovide the versioned
@@ -42,23 +41,27 @@ KERNEL_IMAGEDEST = "/tmp"
 FILES_kernel-image = "${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz"
 
 do_configure_prepend() {
-    oe_machinstall -m 0644 ${WORKDIR}/defconfig ${S}/.config
-    oe_runmake oldconfig
+    rm -rf ${STAGING_KERNEL_DIR}/.cofig
+    rm -rf ${STAGING_KERNEL_DIR}/.config
+    rm -rf ${STAGING_KERNEL_DIR}/.config.old
+    rm -rf ${STAGING_KERNEL_DIR}/include/generated
+    rm -rf ${STAGING_KERNEL_DIR}/include/config
+    rm -rf ${STAGING_KERNEL_DIR}/arch/mips/include/generated
 }
 
 kernel_do_install_append() {
-    ${STRIP} ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION}
-    gzip -9c ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION} > ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
-    rm ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION}
+	${STRIP} ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION}
+	gzip -9c ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION} > ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
+	rm ${D}${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}-${KERNEL_VERSION}
 }
 
 pkg_postinst_kernel-image () {
-    if [ "x$D" == "x" ]; then
-        if [ -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz ] ; then
-            flash_erase /dev/mtd7 0 0
-            nandwrite -p /dev/mtd7 /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
-            rm -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
-        fi
-    fi
-    true
+	if [ "x$D" == "x" ]; then
+		if [ -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz ] ; then
+			flash_erase /dev/${MTD_KERNEL} 0 0
+			nandwrite -p /dev/${MTD_KERNEL} /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
+			rm -f /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.gz
+		fi
+	fi
+	true
 }
