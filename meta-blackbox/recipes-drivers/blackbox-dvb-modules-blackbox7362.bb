@@ -3,14 +3,12 @@ SECTION = "base"
 PRIORITY = "required"
 LICENSE = "CLOSED"
 
-RDEPENDS_${PN} += "blackbox-ci-controller enigma2-plugin-extensions-socketmmi"
-
 INHIBIT_PACKAGE_STRIP = "1"
 
 inherit module
 
 KV = "3.14.21"
-SRCDATE = "20150611"
+SRCDATE = "20150617"
 
 SRC_URI[md5sum] = "03c212796a69f87af59410554db47dce"
 SRC_URI[sha256sum] = "f4a4e1065e947e98f8bf765571bd1a00235b438d45691b877363110ba0cb52a4"
