@@ -8,10 +8,10 @@ INHIBIT_PACKAGE_STRIP = "1"
 inherit module
 
 KV = "3.14.21"
-SRCDATE = "20150617"
+SRCDATE = "20150703"
 
-SRC_URI[md5sum] = "03c212796a69f87af59410554db47dce"
-SRC_URI[sha256sum] = "f4a4e1065e947e98f8bf765571bd1a00235b438d45691b877363110ba0cb52a4"
+SRC_URI[md5sum] = "7ddae71259b09dbbb8cdf6030cb0f4b8"
+SRC_URI[sha256sum] = "b2c45484711f3d6eeb4ba878cc6a33cee0b29f2a9fe94bdd2d524798f9314ad1"
 
 SRC_URI = "http://unibox.to/feeds/eco/development/drivers/linuxdvb_7362-${KV}-${SRCDATE}.tar.gz"
 
