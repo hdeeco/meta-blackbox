@@ -2,7 +2,7 @@ DESCRIPTION="blackbox ci controller"
 LICENSE = "CLOSED"
 require conf/license/license-close.inc
 
-PR = "r12"
+PR = "r13"
 PV = "0.1"
 
 SRC_URI="file://blackbox-ci-controller \
