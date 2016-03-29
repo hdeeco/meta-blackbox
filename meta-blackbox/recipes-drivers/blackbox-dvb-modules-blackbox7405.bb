@@ -1,5 +1,5 @@
 KV = "3.14.21"
-SRCDATE = "20160128"
+SRCDATE = "20160327"
 
 RDEPENDS_${PN} += "blackbox7405-mac-check"
 
